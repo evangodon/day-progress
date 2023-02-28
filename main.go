@@ -12,10 +12,10 @@ import (
 )
 
 const (
-	colorOne = "#FF7CCB"
-	colorTwo = "#FDFF8C"
-	char     = '█'
-	width    = 100
+	colorOne     = "#FF7CCB"
+	colorTwo     = "#FDFF8C"
+	char         = '█'
+	defaultWidth = 100
 )
 
 var now = time.Now()
@@ -25,13 +25,14 @@ var dayEnd = time.Date(now.Year(), now.Month(), now.Day(), 17, 0, 0, 0, time.Loc
 func main() {
 	colorLeft := flag.String("color-1", colorOne, "Left color")
 	colorRight := flag.String("color-2", colorTwo, "Right color")
+	width := flag.Int("width", defaultWidth, "width")
 	flag.Parse()
 
 	prog := progress.New(
 		progress.WithScaledGradient(*colorLeft, *colorRight),
 		progress.WithColorProfile(termenv.TrueColor),
 	)
-	prog.Width = width
+	prog.Width = *width
 	prog.ShowPercentage = false
 	prog.Full = char
 	prog.Empty = char
@@ -46,7 +47,7 @@ func main() {
 	}
 
 	text := fmt.Sprintf("%.0f%% of day done", s)
-	title := lipgloss.NewStyle().Width(width + len(start) + len(end)).Align(lipgloss.Center).Faint(true)
+	title := lipgloss.NewStyle().Width(defaultWidth + len(start) + len(end)).Align(lipgloss.Center).Faint(true)
 	fmt.Print(title.Render(text))
 
 	fmt.Printf("\n%s %s %s", start, prog.ViewAs(percentage), end)
