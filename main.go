@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math"
 	"time"
@@ -21,10 +22,13 @@ var now = time.Now()
 var dayStart = time.Date(now.Year(), now.Month(), now.Day(), 9, 0, 0, 0, time.Local)
 var dayEnd = time.Date(now.Year(), now.Month(), now.Day(), 17, 0, 0, 0, time.Local)
 
-// TODO: flags to set color
 func main() {
+	colorLeft := flag.String("color-1", colorOne, "Left color")
+	colorRight := flag.String("color-2", colorTwo, "Right color")
+	flag.Parse()
+
 	prog := progress.New(
-		progress.WithScaledGradient(colorOne, colorTwo),
+		progress.WithScaledGradient(*colorLeft, *colorRight),
 		progress.WithColorProfile(termenv.TrueColor),
 	)
 	prog.Width = width
