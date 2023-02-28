@@ -36,7 +36,12 @@ func main() {
 	start := dayStart.Format(time.Kitchen)
 	end := dayEnd.Format(time.Kitchen)
 
-	text := fmt.Sprintf("%.0f%% of day done", math.Round(percentage*100))
+	s := math.Round(percentage * 100)
+	if s > 100 {
+		s = 100
+	}
+
+	text := fmt.Sprintf("%.0f%% of day done", s)
 	title := lipgloss.NewStyle().Width(width + len(start) + len(end)).Align(lipgloss.Center).Faint(true)
 	fmt.Print(title.Render(text))
 
